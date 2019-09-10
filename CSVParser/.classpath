@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="C:/Users/ryanb/Documents/jar files/sqlite-jdbc-3.27.2.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ryanb/Documents/jar files/commons-io-2.6-src"/>
 	<classpathentry kind="lib" path="C:/Users/ryanb/Documents/jar files/ws-commons-util-1.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/ryanb/Documents/jar files/opencsv-4.6.jar" sourcepath="C:/Users/ryanb/Documents/jar files/opencsv-4.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

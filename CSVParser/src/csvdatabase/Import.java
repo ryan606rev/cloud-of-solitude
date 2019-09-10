@@ -3,8 +3,10 @@ package csvdatabase;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
+import com.opencsv.CSVReader;
 
 public class Import {
 	
@@ -27,6 +29,9 @@ public class Import {
 	String currentLine = "";
 	String[] tempArray;
 	
+	
+	
+	
 	/*
 	 * this method does not get the name of the file from the extension
 	 * instead this method calls the variable to other classes
@@ -43,6 +48,10 @@ public class Import {
 		return this.newArray;
 	}
 	
+	
+	
+	
+	
 	public void inputFile() {
 		
 		//initialize the scanner tool and create received object
@@ -51,7 +60,7 @@ public class Import {
 		filePath = readName.next();
 		//call openFile, enter the file name so we can read it
 		//openFile(file);
-		getArraySize();
+		//getArraySize();
 		
 	}
 	
@@ -99,50 +108,60 @@ public class Import {
 			System.out.println(e);
 		}
 		
+		System.out.println("Full Array Size:");
 		System.out.println("Rows: " + rows + " " + "Columns: " + cols);
 			
 	}
 	
 	
 
-		
+	//credit mkyong.com for the tutorial	
 	public void createArray() {
 		
 		
-		newArray = new String[rows][cols];
+		
 			
-		//moved variable initialization to the top
-		
-		currentLine = "";
-		
-		//String fileLocation;
+		CSVReader reader = null;
 		
 		try {
-			//setup scanner
-			fromScan = new Scanner(new BufferedReader(new FileReader(filePath)));
 			
-			//loop for while we still have a next row
-			while (fromScan.hasNextLine()) {
-				
-				//read the line form the file
-				currentLine = fromScan.nextLine();
-				//split data into individual values in row
-				tempArray = currentLine.split(",");
-				
-				//transfer data from tempArray to newArray
-				for(int x=0; x < tempArray.length; x++) {
-					
-					newArray[rowx][x] = tempArray[x];
-					
-				}
-				rowx++; //move to next row
-				
+			reader = new CSVReader(new FileReader(filePath));
+			String[] line;
+			int numOfRows = 0; // keep a count of the number of rows for the newArray
+			
+			//this replaces the method for finding the number of rows we will need in our array
+			while ((line = reader.readNext()) != null) {
+				numOfRows++;
 			}
 			
-		} catch (Exception e) {
+			System.out.println("We have found " + numOfRows + " of data.");
+			
+			//changing our array variable from null to the correct number of rows and columns
+			newArray = new String[numOfRows][10];
+			
+			int currentRow = 0;
+			
+			// this is for writing each line of the .csv file to our array
+			while ((line = reader.readNext()) != null) {
+				newArray[currentRow][0] = line[0];
+				newArray[currentRow][1] = line[1];
+				newArray[currentRow][2] = line[2];
+				newArray[currentRow][3] = line[3];
+				newArray[currentRow][4] = line[4];
+				newArray[currentRow][5] = line[5];
+				newArray[currentRow][6] = line[6];
+				newArray[currentRow][7] = line[7];
+				newArray[currentRow][8] = line[8];
+				newArray[currentRow][9] = line[9];
+				currentRow++;
+			}
+			
+			
+		} catch (IOException e) {
 			System.out.println(e);
 		}
 		
+		//for testing
 		System.out.println(Arrays.deepToString(newArray[0]));
 		System.out.println(Arrays.deepToString(newArray[1]));
 		System.out.println(Arrays.deepToString(newArray[2]));
@@ -151,6 +170,28 @@ public class Import {
 		
 		//testing purposes
 		extractFileName();
+		
+	}
+	
+	
+	//this takes the data form our array and puts it into the database
+	public void insertIntoDatabase() {
+		
+		//create a new object for the Database class
+		Database database = new Database();
+		
+		//a loop that will put the rows of the array into the database one at a time
+		for (int k = 0; k < rows; k++) {
+			//the command that inserts one row of data
+			database.insert(newArray[k][0], newArray[k][2], newArray[k][3], newArray[k][4], newArray[k][5], 
+					newArray[k][6], newArray[k][7], newArray[k][8], newArray[k][9], newArray[k][10]);
+			//outputs confirmation that command was sent to input the data
+			System.out.println("Successfuly created entry for USER: " + newArray[k][2]);
+		}
+		
+	}
+	
+	public void verifyData() {
 		
 	}
 

@@ -30,9 +30,11 @@ public class CSVParser {
 		
 		importedFile.createArray();
 		
-		Database sqliteDatabase = new Database();
+		//Database sqliteDatabase = new Database();
 		
-		sqliteDatabase.newDatabase(importedFile.getFileName());
+		//sqliteDatabase.newDatabase(importedFile.getFileName());
+		
+		importedFile.insertIntoDatabase();
 
 	}
 
