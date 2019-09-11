@@ -1,4 +1,10 @@
 package csvdatabase;
+
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 /**
  * 
  */
@@ -28,14 +34,37 @@ public class CSVParser {
 		
 		importedFile.inputFile();
 		
+		importedFile.getArraySize();
+		
 		importedFile.createArray();
 		
-		//Database sqliteDatabase = new Database();
+		Database sqliteDatabase = new Database();
 		
-		//sqliteDatabase.newDatabase(importedFile.getFileName());
+		sqliteDatabase.newDatabase(importedFile.getFileName());
 		
 		importedFile.insertIntoDatabase();
+		
+		//tutorial from coderanch.com
+		Logger log = Logger.getLogger("DataEntryLog");
+		FileHandler fh;
+		
+		try {
+			//configure the logger with the handler and formatter
+			fh = new FileHandler("C:temp/test/" + importedFile.getFileName() + ".log");
+			log.addHandler(fh);
 
+			SimpleFormatter formatter = new SimpleFormatter();
+			fh.setFormatter(formatter);
+		} catch(SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//messages that will be logged
+		log.info("Number of records received: " + importedFile.getTotal());
+		log.info("Number of records successful: " + importedFile.getGood());
+		log.info("Number of records failed: " + importedFile.getBad());
+		
 	}
 
 }
