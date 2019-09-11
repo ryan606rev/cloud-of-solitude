@@ -1,0 +1,6 @@
+Sep 11, 2019 9:01:20 AM csvdatabase.CSVParser main
+INFO: Number of records received: 10
+Sep 11, 2019 9:01:20 AM csvdatabase.CSVParser main
+INFO: Number of records successful: 0
+Sep 11, 2019 9:01:20 AM csvdatabase.CSVParser main
+INFO: Number of records failed: 1

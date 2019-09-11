@@ -60,7 +60,7 @@ public class Import {
 	
 	//return total number of entries from original .csv file
 	public int getTotal() {
-		return this.numOfCols;
+		return this.numOfRows;
 	}
 	
 	
@@ -71,10 +71,7 @@ public class Import {
 		readName = new Scanner(System.in);
 		//assign input to input
 		filePath = readName.next();
-		//call openFile, enter the file name so we can read it
-		//openFile(file);
-		//getArraySize();
-		
+		extractFileName();//get the file name so it can be used for naming later
 	}
 	
 	/*
@@ -126,6 +123,15 @@ public class Import {
 		//changing our array variable from null to the correct number of rows and columns
 		masterArray = new String[numOfRows][numOfCols];
 		
+		//testing a fell solution for masterArray
+		//for (String[] row: masterArray) {
+		//	Arrays.fill(row, "null");
+		//}
+		//System.out.println(Arrays.deepToString(masterArray[12]));
+		
+		//trying this to see if it will work
+		//for (String[] row : )
+		
 		CSVReader reader = null;
 		
 		int rowPointer = 0;
@@ -158,13 +164,13 @@ public class Import {
 		
 		//for testing, array preview
 		//System.out.println(Arrays.deepToString(masterArray[0]));
-		//System.out.println(Arrays.deepToString(masterArray[1]));
-		//System.out.println(Arrays.deepToString(masterArray[2]));
-		//System.out.println(Arrays.deepToString(masterArray[3]));
+		//System.out.println(Arrays.deepToString(masterArray[11]));
+		//System.out.println(Arrays.deepToString(masterArray[12]));
+		//System.out.println(Arrays.deepToString(masterArray[13]));
+		//System.out.println(Arrays.deepToString(masterArray));
 		
 		
-		//testing purposes
-		extractFileName();
+		//sort into proper arrays
 		qualityControl(masterArray);
 		
 	}
@@ -180,25 +186,33 @@ public class Import {
 	public void qualityControl(String[][] unsorted) {
 		
 		String[][] tempBad = new String[numOfRows][numOfCols]; //temp for holding the entries with null values
-		goodArray = new String[numOfRows][numOfCols];
-		boolean theRowIsAcceptable = true;
+		goodArray = new String[numOfRows][numOfCols]; //the array of values that can be passed on for insertion into the database
+		boolean theRowIsAcceptable = true; //whether or not the row is worthy of insertion
+		//String itsnull = "TRUE";
 		
+		//this is where we move through the array searching full null values for the discard pile
 		for (int x = 0; x < numOfRows; x++) { //until the count is equal to the number of rows in the unsorted array
+			
+			//steps through each row, x is the current row
 			for (int y = 0; y < numOfCols; y++) { //until the count is equal to the number of columns
-				if (unsorted[x][y] == null) { //if the value is null
-					System.arraycopy(masterArray[x], 0, tempBad[x], 0, numOfCols);
+				
+				//sets through each column for the row, y is the current column
+				if (unsorted[x][y].length() == 0) { //if the value is empty
+					System.arraycopy(unsorted[x], 0, tempBad[bad], 0, numOfCols);//copy the whole row to bad
 					bad++; //increase count for bad entries by 1
-					y = numOfCols; //end the if y loop, the loop that was moving through each row column by column
-					theRowIsAcceptable = false;
+					theRowIsAcceptable = false; //shows that the row is not acceptable so that it will not be added to the good array
+					y = numOfCols; //end the if y loop, so that it we move on to the next row
 				}
 				
 			}
-			if (theRowIsAcceptable == true) {
-				System.arraycopy(masterArray[x], 0, goodArray[x], 0, numOfCols);
+			if (theRowIsAcceptable == true) { // if the row is good
+				System.arraycopy(unsorted[x], 0, goodArray[good], 0, numOfCols);// copy the row to the good array
+				good++;//add one to the good count
 			}	
-			theRowIsAcceptable = true;
+			theRowIsAcceptable = true; // resets the value for the next cycle
 		}
-		printCSV(bad, tempBad);
+		//System.out.println(Arrays.deepToString(goodArray));//testing
+		printCSV(bad, tempBad); //calls print CSV so that we get a list of the bad entries that need to be fixed
 	}
 	
 	
@@ -218,7 +232,7 @@ public class Import {
 		}
 		
 		//part 2 printing out the entries with null fields to a .csv file
-		String badLocation = "./" + fileName + "-bad.csv";
+		String badLocation = "C:\\CSVParser\\" + fileName + "-bad.csv";
 		
 		try {
 			Writer writer = Files.newBufferedWriter(Paths.get(badLocation));
@@ -252,10 +266,11 @@ public class Import {
 		//a loop that will put the rows of the array into the database one at a time
 		for (int k = 0; k < good; k++) {
 			//the command that inserts one row of data
-			database.insert(goodArray[k][0], goodArray[k][2], goodArray[k][3], goodArray[k][4], goodArray[k][5], 
-					goodArray[k][6], goodArray[k][7], goodArray[k][8], goodArray[k][9], goodArray[k][10]);
+			database.insert(fileName + ".db", goodArray[k][0], goodArray[k][1], goodArray[k][2], goodArray[k][3], goodArray[k][4], 
+					goodArray[k][5], goodArray[k][6], goodArray[k][7], goodArray[k][8], goodArray[k][9]);
 			//outputs confirmation that command was sent to input the data
-			System.out.println("Successfuly created entry for USER: " + goodArray[k][2]);
+			System.out.println(Arrays.deepToString(masterArray[k]));
+			//System.out.println("Successfuly created entry for USER: " + goodArray[k][2]);
 		}
 		
 	}
