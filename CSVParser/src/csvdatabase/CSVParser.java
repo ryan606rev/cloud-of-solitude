@@ -94,7 +94,7 @@ public class CSVParser {
 		log.info("Number of records successful: " + importedFile.getGood());
 		log.info("Number of records failed: " + importedFile.getBad());
 		
-		System.out.println("Your files can be found at: C:\\Program Files\\CSVParser");
+		System.out.println("Your files can be found at: C:\\CSVParser");
 		
 	}
 

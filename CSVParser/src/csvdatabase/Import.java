@@ -269,7 +269,7 @@ public class Import {
 			database.insert(fileName + ".db", goodArray[k][0], goodArray[k][1], goodArray[k][2], goodArray[k][3], goodArray[k][4], 
 					goodArray[k][5], goodArray[k][6], goodArray[k][7], goodArray[k][8], goodArray[k][9]);
 			//outputs confirmation that command was sent to input the data
-			System.out.println(Arrays.deepToString(masterArray[k]));
+			//System.out.println(Arrays.deepToString(masterArray[k]));
 			//System.out.println("Successfuly created entry for USER: " + goodArray[k][2]);
 		}
 		
