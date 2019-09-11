@@ -56,6 +56,9 @@ that I was using alot of memory as it was and I wanted to avoid making it worse.
 transferred into a new appropriately sized array so that a long list of null fields would not be printing out in
 the new csv-bad file.
 
+I had an issue inserting into the table that created in my database. The java tutorials were basically all identical
+so I ended up looking directly at the SQLite text commands and that is where I found my solution.
+
 In the end I believe there were still a few errors thrown by SQLite about a few of the entries but those will have to 
 remain for now because I have run out of time. Overall I do Believe that I have satisfied the requirements for this 
 project. I hope my effort shows in the finished product because it was quite a bit of work to get it to this point. I 
